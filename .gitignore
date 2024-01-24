@@ -1,3 +1,4 @@
 
-fastAPI_SQL.py
-Chinook.db
+__pycache__/api_client.cpython-311.pyc
+__pycache__/request.cpython-311.pyc
+FastAPI/db.db
