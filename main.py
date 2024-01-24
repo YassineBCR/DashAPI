@@ -12,6 +12,7 @@ app.layout = html.Div(children=[
     html.Div(children='''
         Bienvenue dans ton dashboard.
     '''),
+   
     dcc.Input(id='input-ville'),
     html.Div(id='div-rfm')
 ])
@@ -21,6 +22,7 @@ app.layout = html.Div(children=[
 
 def Uptadate_rfm(city):
     return html.Div(children=str (revenu_fiscal_moyen(city=city, year=2018)))
-   
+
+
 if __name__ == '__main__':
     app.run(debug=True)
