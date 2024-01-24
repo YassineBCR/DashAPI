@@ -2,3 +2,4 @@
 __pycache__/api_client.cpython-311.pyc
 __pycache__/request.cpython-311.pyc
 FastAPI/db.db
+*.db
