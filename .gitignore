@@ -4,3 +4,4 @@ __pycache__/request.cpython-311.pyc
 FastAPI/db.db
 *.db
 API-ML/c_transactions.csv
+Data/c_transactions.csv
