@@ -1,0 +1,151 @@
+import dash_bootstrap_components as dbc 
+from dash import Dash, html, dcc, dash_table , Input, Output
+from request import revenu_fiscal_moyen, acquisitions, prix_au_metre_carre, transactions_count_by_department
+from asset.navbarr import create_bande_bleue
+import joblib
+import numpy as np
+
+
+model = joblib.load('rfm.pkl')
+
+app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+# Mise en page de la bande bleue avec le logo
+bande_bleue_layout = create_bande_bleue()
+
+
+# Mise en page de la navbar et du contenu principal
+app.layout = html.Div(style={'backgroundColor': '#282c34', 'height': '100vh'}, children=[
+     bande_bleue_layout,
+   # navbar,  # Utilisez la nouvelle barre de navigation importée
+    html.Div(children='''Bienvenue dans ton dashboard.''', style={'color': 'white' , 'text-align' : 'center'}),
+    dcc.Input(id='input-variable', type='number', value=0),
+    html.Button('Prédire', id='predict-button'),
+    html.Div(id='output-prediction'),
+
+    # Inputs généraux
+    html.Div(children='''Connaitre les revenu fiscaux moyen par ville et année.''', style={'color': 'white'}),
+    dcc.Input(id='input-ville', placeholder='Insérez une ville'),
+    dcc.Input(id='input-annee', type='number', placeholder='Sélectionnez une année'),
+    html.Button('Afficher le graphe', id='mon-bouton'),
+    html.Div(id='zone-graphe'),
+    
+
+    # Div pour 'revenu_fiscal_moyen'
+    html.Div(id='div-rfm', style={'color': 'white'}),
+
+    # Inputs spécifiques à 'acquisitions'
+    dcc.Input(id='input-acquisitions-ville', placeholder='Insérez une ville', className='mt-3'),
+    dcc.Input(id='input-acquisitions-anne', type='number', placeholder='Insérez une date'),
+
+    # Div pour 'acquisitions'
+    html.Div(id='div-acquisitions', style={'color': 'white'}),
+
+    # Inputs pour PRIX AU M2
+    dcc.Input(id='input-prixm2-ville', placeholder='Insérez une ville', className='mt-3'),
+
+    # Div pour 'prix_au_metre_carre'
+    html.Div(id='div-prixm2', style={'color': 'white'}),
+
+    # input pour transactions_count_by_department
+    dcc.Input(id='input-transacpardep', placeholder='Insérez une ville', className='mt-3'),
+
+    # Div pour transactions par department
+    html.Div(id='div-transacpardep', style={'color': 'white'}),
+])
+
+@app.callback(
+    Output('output-prediction', 'children'),
+    [Input('predict-button', 'n_clicks')],
+    [Input('input-variable', 'value')],
+
+
+)
+def faire_prediction(n_clicks, input_value):
+    # Vérifie si le bouton a été cliqué
+    if n_clicks is None:
+        return "Cliquez sur le bouton pour effectuer la prédiction"
+    
+    # Effectue la prédiction avec le modèle
+    prediction = model.predict(np.array([[input_value]]))
+
+    # Affiche la prédiction
+    return f"Prédiction : {prediction[0]}"
+
+# Définit la fonction de mise à jour du graphe en fonction du clic sur le bouton
+@app.callback(
+    Output('zone-graphe', 'children'),
+    [Input('mon-bouton', 'n_clicks')]
+)
+def afficher_graphe(n_clicks):
+    # Vérifie si le bouton a été cliqué
+    if n_clicks is None:
+        return "Cliquez sur le bouton pour afficher le graphe"
+    
+    # Crée le graphe à afficher
+    fig = {
+        'data': [
+            {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': 'Graphe de test'}
+        ],
+        'layout': {
+            'title': 'Mon Graphe'
+        }
+    }
+
+    # Retourne le graphe
+    return dcc.Graph(
+        id='mon-graphe',
+        figure=fig
+    )
+
+
+@app.callback(Output('div-rfm', 'children'),
+              [Input('input-ville', 'value'),
+               Input('input-annee', 'value')])
+def update_rfm(city, year):
+    if not year:
+        year = 2018
+    rfm_value = revenu_fiscal_moyen(city=city, year=year)
+    if rfm_value is not None : 
+        return f"Revenu fiscal moyen pour {city} en {year} : {rfm_value}"
+    else : 
+        return "Aucune donnée disponible pour les revenus fiscaux moyens."
+
+@app.callback(Output('div-acquisitions', 'children'),
+              [Input('input-acquisitions-ville', 'value'),
+               Input('input-acquisitions-anne', 'value')])
+def update_acquisitions(city, year):
+    if not year : 
+        year = 2020
+    acquisitions_data = acquisitions(city)
+    
+    if acquisitions_data is not None:
+        # Vous devez adapter cette partie en fonction de la structure réelle des données retournées par la fonction acquisitions
+        return f"Nombre d'acquisitions pour {city} en {year} : {acquisitions_data}"
+    else:
+        return "Aucune donnée disponible pour les acquisitions."
+
+
+@app.callback(Output('div-prixm2', 'children'),
+              [Input('input-prixm2-ville', 'value')]) 
+def update_prix_au_metre_carre(city):
+    if not city:
+        city = 'PARIS'
+    prix_m2_value = prix_au_metre_carre(city=city)
+    if prix_m2_value is not None:
+        return f"Prix au m2 pour {city} : {prix_m2_value}"
+    else:
+        return "Aucune donnée disponible pour le prix au m2."
+    
+@app.callback(Output('div-transacpardep', 'children'),
+              [Input('input-transacpardep', 'value')]) 
+def update_transactions_by_department(department): 
+    if not department:
+        department = '75'
+    ts_data = transactions_count_by_department(department=department)
+    if ts_data is not None:
+        return f"Nombre de transactions pour {department} : {ts_data}"
+    else:
+        return "Aucune donnée disponible pour les transactions."
+if __name__ == '__main__':
+    app.run(debug=True)
