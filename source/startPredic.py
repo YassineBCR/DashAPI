@@ -6,7 +6,7 @@ import numpy as np
 app = FastAPI()
 
 # Charger le modèle RandomForestRegressor
-model = joblib.load("C:\\Users\\Utilisateur\\Downloads\\transaction\\random_forest_model.pkl")
+model = joblib.load(r"C:\Users\Utilisateur\Desktop\cours\Simplon-cours\DashAPI\source/random_forest_model.pkl")
 
 @app.post("/sq2_price_predictor_v1/", description="Retourne une prédiction de prix au m²")
 async def sq2_price_predictor(longitude: float, latitude: float, date_transaction: int):    
@@ -15,4 +15,4 @@ async def sq2_price_predictor(longitude: float, latitude: float, date_transactio
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="127.0.0.1", port=8001)
