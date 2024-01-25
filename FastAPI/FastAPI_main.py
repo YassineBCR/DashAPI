@@ -38,7 +38,8 @@ async def transactions_sample(city: str = ""):
         result = cur.fetchall()
         if not result or len(result) == 0:
             raise HTTPException(status_code=404, detail="Veuillez spécifier une valeur valide")
-        return result[0]
+        print (result)
+        return result 
     except Exception as e:
         return handle_sql_error(e, "Erreur lors de la récupération des 10 dernières transactions.")
 
