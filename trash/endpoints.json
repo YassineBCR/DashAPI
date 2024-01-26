@@ -1,0 +1,199 @@
+{
+  "revenu_fiscal_moyen_revenu_fiscal__get": {
+    "path": "/revenu_fiscal/",
+    "method": "get",
+    "parameters_in": [
+      {
+        "required": true,
+        "schema": {
+          "type": "string",
+          "title": "Year"
+        },
+        "name": "year",
+        "in": "query"
+      },
+      {
+        "required": false,
+        "schema": {
+          "type": "string",
+          "title": "City",
+          "default": ""
+        },
+        "name": "city",
+        "in": "query"
+      }
+    ],
+    "parameters_out": null,
+    "exceptions": {
+      "422": null
+    }
+  },
+  "transactions_sample_transactions_sample__get": {
+    "path": "/transactions_sample/",
+    "method": "get",
+    "parameters_in": [
+      {
+        "required": false,
+        "schema": {
+          "type": "string",
+          "title": "City",
+          "default": ""
+        },
+        "name": "city",
+        "in": "query"
+      }
+    ],
+    "parameters_out": null,
+    "exceptions": {
+      "422": null
+    }
+  },
+  "acquisitions_acquisitions__get": {
+    "path": "/acquisitions/",
+    "method": "get",
+    "parameters_in": [
+      {
+        "required": false,
+        "schema": {
+          "type": "string",
+          "title": "City",
+          "default": ""
+        },
+        "name": "city",
+        "in": "query"
+      }
+    ],
+    "parameters_out": null,
+    "exceptions": {
+      "422": null
+    }
+  },
+  "prix_au_metre_carre_prix_au_metre_carre__get": {
+    "path": "/prix_au_metre_carre/",
+    "method": "get",
+    "parameters_in": [
+      {
+        "required": false,
+        "schema": {
+          "type": "string",
+          "title": "City",
+          "default": ""
+        },
+        "name": "city",
+        "in": "query"
+      }
+    ],
+    "parameters_out": null,
+    "exceptions": {
+      "422": null
+    }
+  },
+  "nombre_acquisitions_nombre_acquisitions__get": {
+    "path": "/nombre_acquisitions/",
+    "method": "get",
+    "parameters_in": [
+      {
+        "required": false,
+        "schema": {
+          "type": "string",
+          "title": "City",
+          "default": ""
+        },
+        "name": "city",
+        "in": "query"
+      }
+    ],
+    "parameters_out": null,
+    "exceptions": {
+      "422": null
+    }
+  },
+  "count_appartments_rooms_count_appartments_rooms__get": {
+    "path": "/count_appartments_rooms/",
+    "method": "get",
+    "parameters_in": [
+      {
+        "required": false,
+        "schema": {
+          "type": "string",
+          "title": "City",
+          "default": ""
+        },
+        "name": "city",
+        "in": "query"
+      }
+    ],
+    "parameters_out": null,
+    "exceptions": {
+      "422": null
+    }
+  },
+  "avg_prix_par_m2_avignon_avg_prix_par_m2_avignon__get": {
+    "path": "/avg_prix_par_m2_avignon/",
+    "method": "get",
+    "parameters_in": [],
+    "parameters_out": null,
+    "exceptions": {}
+  },
+  "transactions_count_by_department_transactions_count_by_department__get": {
+    "path": "/transactions_count_by_department/",
+    "method": "get",
+    "parameters_in": [
+      {
+        "required": false,
+        "schema": {
+          "type": "string",
+          "title": "Department",
+          "default": ""
+        },
+        "name": "department",
+        "in": "query"
+      }
+    ],
+    "parameters_out": null,
+    "exceptions": {
+      "422": null
+    }
+  },
+  "vente_appart_2k22_foyer_70k_vente_appart_2k22_foyer_70k__get": {
+    "path": "/vente_appart_2k22_foyer_70k/",
+    "method": "get",
+    "parameters_in": [
+      {
+        "required": false,
+        "schema": {
+          "type": "string",
+          "title": "City",
+          "default": ""
+        },
+        "name": "city",
+        "in": "query"
+      }
+    ],
+    "parameters_out": null,
+    "exceptions": {
+      "422": null
+    }
+  },
+  "top_10_ville_dynamic_top_10_ville_dynamic__get": {
+    "path": "/top_10_ville_dynamic/",
+    "method": "get",
+    "parameters_in": [],
+    "parameters_out": null,
+    "exceptions": {}
+  },
+  "top_10_prix_plus_bas_par_appart_top_10_prix_plus_bas_par_appart__get": {
+    "path": "/top_10_prix_plus_bas_par_appart/",
+    "method": "get",
+    "parameters_in": [],
+    "parameters_out": null,
+    "exceptions": {}
+  },
+  "top_10_prix_plus_haut_par_maison_top_10_prix_plus_haut_par_maison__get": {
+    "path": "/top_10_prix_plus_haut_par_maison/",
+    "method": "get",
+    "parameters_in": [],
+    "parameters_out": null,
+    "exceptions": {}
+  }
+}
