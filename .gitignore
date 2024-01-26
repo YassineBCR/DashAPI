@@ -3,3 +3,7 @@ data/c_transactions.csv
 data/db.db
 data/rfm.pkl
 api/Chinook.db
+dash/__pycache__/api_client.cpython-311.pyc
+dash/__pycache__/asset.cpython-311.pyc
+dash/__pycache__/dash_req.cpython-311.pyc
+dash/__pycache__/dashboard.cpython-311.pyc
