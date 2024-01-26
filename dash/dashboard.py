@@ -1,64 +1,35 @@
 import dash_bootstrap_components as dbc 
-from dash import Dash, dcc, html, Input, Output, State
+import requests
+from dash import Dash, dcc, html, Input, Output, State , dcc 
 import api_client
 from dash.dependencies import State
 from dash_req import *
 import plotly.express as px
-import pickle 
 import numpy as np
-import joblib 
-from dash import dcc
-
+import requests 
 
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
-# Mise en page de la bande bleue avec le logo
-#bande_bleue_layout = create_bande_bleue()
-
-app.layout = html.Div(style={'backgroundColor': '#282c34', 'height': '100vh'}, children=[
-     #bande_bleue_layout,
-   # navbar,  # Utilisez la nouvelle barre de navigation importée
+app.layout = html.Div(className='InputContainer', style={'height': '100vh'}, children=[
     html.Div(children='''Bienvenue dans ton dashboard.''', style={'color': 'white' , 'text-align' : 'center'}),
-
-    # Inputs généraux
-    html.Div(children='''Connaitre les revenu fiscaux moyen par ville et année.''', style={'color': 'white'}),
-    dcc.Input(id='input-ville', placeholder='Insérez une ville'),
+    html.Div(children='''Connaitre les revenu fiscaux moyen par ville et année.''', style={'color': 'white','text-align' : 'center'}),
+    dcc.Input(id='input-ville', placeholder='Insérez une ville', className='mt-3'),
     dcc.Input(id='input-annee', type='number', placeholder='Sélectionnez une année'),
-
-    # Div pour 'revenu_fiscal_moyen'
     html.Div(id='div-rfm', style={'color': 'white'}),
-
-    # Input pour Transaction_sample
     dcc.Input(id='input-transaction-ville', placeholder='Insérez une ville',),
     html.Div(id='div-transaction-ville', style={'color': 'white'}),
-
-    # Inputs spécifiques à 'acquisitions'
     dcc.Input(id='input-acquisitions-ville', placeholder='Insérez une ville', className='mt-3'),
-    # Div pour 'acquisitions'
     html.Div(id='div-acquisitions', style={'color': 'white'}),
-
-    # Inputs pour PRIX AU M2
     dcc.Input(id='input-prixm2-ville', placeholder='Insérez une ville', className='mt-3'),
-
-    # Div pour 'prix_au_metre_carre'
     html.Div(id='div-prixm2', style={'color': 'white'}),
-
-    # input pour transactions_count_by_department
     dcc.Input(id='input-transacpardep', placeholder='Insérez une ville', className='mt-3'),
-    # Div pour transactions par department
+    html.Button('Afficher le graphique', id='button-show-graph'),
     html.Div(id='div-transacpardep', style={'color': 'white'}),
-
-    # Div pour transactions par department
-    html.Div(id='div-transacpardep', style={'color': 'white'}),
-
-    #div et input pour count_appartments_rooms
     dcc.Input(id='input-countappartrooms', placeholder='Insérez une ville', className='mt-3'),
     html.Div(id='div-countappartrooms', style={'color': 'white'}),
-
-    # Div pour 'prix_au_metre_carre'
+    
 ])
-
 
 
 @app.callback(Output('div-rfm', 'children'),
@@ -118,8 +89,6 @@ def update_acquisitions(city):
         return "Aucune donnée disponible pour les acquisitions."
 
 
-
-
 @app.callback(Output('div-prixm2', 'children'),
               [Input('input-prixm2-ville', 'value')]) 
 def update_prix_au_metre_carre(city):
@@ -130,17 +99,36 @@ def update_prix_au_metre_carre(city):
         return f"Prix au m2 pour {city} : {prix_m2_value}"
     else:
         return "Aucune donnée disponible pour le prix au m2."
-    
+
 @app.callback(Output('div-transacpardep', 'children'),
-              [Input('input-transacpardep', 'value')]) 
-def update_transactions_by_department(department): 
-    if not department:
-        department = '75'
-    ts_data = transactions_count_by_department(department=department)
-    if ts_data is not None:
-        return f"Nombre de transactions pour {department} : {ts_data}"
+              [Input('button-show-graph', 'n_clicks')],
+              [State('input-transacpardep', 'value')]) 
+def update_transactions_by_department(n_clicks, department): 
+    if n_clicks is None:
+        return html.Div()  # Ne rien afficher tant que le bouton n'a pas été cliqué
+    if not department or not department.isdigit():
+        return html.Div("Veuillez entrer un numéro de département valide.")
+    transactions_count_by_department_url = 'http://127.0.0.1:8000/transactions_count_by_department/'
+    params = {'department': department}
+    response = requests.get(transactions_count_by_department_url, params=params)
+    if response.ok:
+        ts_data = pd.DataFrame.from_dict(response.json())
+        if not ts_data.empty:
+            ts_data = ts_data.loc[(ts_data[0] < 100)]
+            fig = px.bar(ts_data, x=0, y=1, labels={'0':'départements','1':'ventes'})
+            fig.update_traces(marker=dict(line=dict(width=0.1)))  # Ajuster la largeur de la ligne de la barre
+            fig.update_layout(bargap=0.9)
+            fig.update_layout(
+                width=400,  # Définir la largeur du graphique
+                height=300,  # Définir la hauteur du graphique
+                margin=dict(autoexpand=True, l=50, r=50, t=50, b=50),  # Auto-expand et ajustement des marges
+            )  # Définir les marges
+            return html.Div([html.H3('Nombre de ventes par département'),
+                             dcc.Graph(figure=fig)])
+        else:
+            return html.Div("Aucune donnée disponible.")
     else:
-        return "Aucune donnée disponible pour les transactions."
+        return f"Erreur : {response.status_code}"
 
 
 @app.callback(Output('div-countappartrooms', 'children'),

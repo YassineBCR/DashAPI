@@ -1,0 +1,21 @@
+/* styles.css */
+body {
+  background-color: #343541 !important;
+}
+
+.dashboard-container { /* Fond gris */
+    height: 100vh;  /* Hauteur à 100% de la vue */
+  }
+
+.InputContainer{
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+input[type="text"]{
+  width: 200px;
+}

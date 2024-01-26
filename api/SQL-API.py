@@ -13,7 +13,7 @@ def handle_sql_error(e: Exception, detail_message: str, status_code: int = 500):
 
 logging.basicConfig(level=logging.ERROR)
 
-con = sqlite3.connect("data/db.db")
+con = sqlite3.connect("Chinook.db")
 cur = con.cursor()
 
 app = FastAPI()

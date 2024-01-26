@@ -6,7 +6,7 @@ import numpy as np
 app = FastAPI()
 
 # Charger le modèle RandomForestRegressor
-model = joblib.load(r"C:\Users\Utilisateur\Desktop\cours\Simplon-cours\Brief 5 - Dash\data/rfm.pkl")
+model = joblib.load(r"C:\Users\Utilisateur\Desktop\cours\Simplon-cours\DashAPI\data/rfm.pkl")
 
 @app.post("/sq2_price_predictor_v1/", description="Retourne une prédiction de prix au m²")
 async def sq2_price_predictor(longitude: float, latitude: float, date_transaction: int):    

@@ -1,5 +1,7 @@
 from api_client import get
 import pandas as pd
+import requests
+
 
 racine_api = 'http://127.0.0.1:8000'
 
@@ -68,7 +70,7 @@ def avg_prix_par_m2_avignon():
 
 def transactions_count_by_department(department: str):
     try:
-        return get(racine_api + '/transactions_count_by_department/', params={'department': department})
+        requests.get (racine_api + "transactions_count_by_department/", params={'department': department})
     except IndexError:
         return None
     except Exception as e:       
