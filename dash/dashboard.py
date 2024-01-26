@@ -9,7 +9,7 @@ import numpy as np
 import joblib 
 from dash import dcc
 
-
+#ajoute un commentaire de jimmy_code
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
