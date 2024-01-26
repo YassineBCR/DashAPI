@@ -6,8 +6,8 @@ from dash.dependencies import State
 from dash_req import *
 import plotly.express as px
 import numpy as np
-import requests 
-
+import joblib 
+from dash import dcc
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
@@ -87,8 +87,6 @@ def update_acquisitions(city):
         return f"Nombre d'acquisitions pour {city} en 2022 : {acquisitions_data}"
     else:
         return "Aucune donnée disponible pour les acquisitions."
-
-
 @app.callback(Output('div-prixm2', 'children'),
               [Input('input-prixm2-ville', 'value')]) 
 def update_prix_au_metre_carre(city):
