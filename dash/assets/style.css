@@ -16,6 +16,16 @@ body {
   flex-direction: column;
 }
 
+
+
+#input-ville{
+  height: 5vh;
+  width: 5vw;
+  position: relative;
+  top: 10px; left: 10px;
+  right: 10px;
+}
+
 input[type="text"]{
   width: 200px;
 }
