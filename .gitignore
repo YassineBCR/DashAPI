@@ -1,8 +1,7 @@
-
 data/c_transactions.csv
 data/db.db
 data/rfm.pkl
 data/modele_test_idf.ipynb
 data/optimal_rfr_model_idf.pkl
-data/transactions_upload.csv
 data/transactions_idf.csv
+data/transactions_upload.csv
