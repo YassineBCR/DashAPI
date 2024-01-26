@@ -6,7 +6,7 @@ import joblib
 import numpy as np
 
 
-model = joblib.load('rfm.pkl')
+#model = joblib.load('rfm.pkl')
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
