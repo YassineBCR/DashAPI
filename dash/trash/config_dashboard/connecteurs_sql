@@ -1,0 +1,70 @@
+import requests
+import time
+from config_dashboard.config_sql import *
+
+
+#definir une méthode get
+def get(endpoint: str, parameters: dict):
+    start = time.time()
+    res =requests.get(racine_api + endpoint, parameters)
+    end = time.time()
+    print("Temps de request", end - start)
+    if res.status_code == 200:
+        return res.json()
+    else:
+        raise Exception('ERROR: ' + str(res.content))
+
+
+def revenu_fiscal (city: str, year: int =None):
+    try:
+        return get(end1, {"city": city, "year": year})
+    except Exception as e:
+        print(str(e))
+
+def last_transaction (city: str, limit):
+    try:
+        return get(end2, {"city": city, "limit": limit})
+    except Exception as e:
+        print(str(e))
+
+def acquisition_number (city: str, year, nb_piece: str =""):
+    try:
+        return get(end3, {"city": city, "year": year, "nb_piece": nb_piece})
+    except Exception as e:
+        print(str(e))
+
+def average_price (type_bat, year, city: str=""):
+    try:
+        return get(end4, {"type_batiment": type_bat, "year": year,"city": city})
+    except Exception as e:
+        print(str(e))
+
+def repartition (type_bat, city, year):
+    try:
+        return get(end5, {"type_batiment": type_bat,"city": city, "year": year })
+    except Exception as e:
+        print(str(e))
+
+def departement (year: int=None):
+    try:
+        return get(end6, {"year": year})
+    except Exception as e:
+        print(str(e))
+
+def immo_et_revenufisc (type_bat, year, fiscal_year, revenu_fiscal_moy):
+    try:
+        return get(end7, {"type_batiment": type_bat, "year": year,"fiscal_year": fiscal_year, "revenu_fiscal_moyen": revenu_fiscal_moy})
+    except Exception as e:
+        print(str(e))
+
+def dynamism (limit, year: int =None):
+    try:
+        return get(end8, {"limit_top": limit, "year": year})
+    except Exception as e:
+        print(str(e))
+
+def price_limit(type_bat, asc, limit):
+    try:
+        return get(end8, {"type_batiment": type_bat, "ascendant": asc, "limit_top": limit})
+    except Exception as e:
+        print(str(e))

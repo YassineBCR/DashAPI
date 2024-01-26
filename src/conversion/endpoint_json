@@ -1,0 +1,48 @@
+import json
+import requests
+
+# Fonction pour récupérer les données JSON à partir de l'URL
+def get_openapi_data(url):
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return None
+
+# URL OpenAPI
+openapi_url = "http://127.0.0.1:8000/openapi.json"
+
+# Récupérer les données OpenAPI
+openapi_data = get_openapi_data(openapi_url)
+
+# Vérifier si les données ont été récupérées
+if openapi_data:
+    # Initialiser le dictionnaire pour stocker les informations sur les endpoints
+    endpoints_info = {}
+
+    # Parcourir les chemins (paths) dans le document OpenAPI
+    for path, path_info in openapi_data.get("paths", {}).items():
+        # Parcourir les opérations HTTP pour chaque chemin
+        for method, method_info in path_info.items():
+            # Extraire le nom de la fonction
+            function_name = method_info.get("operationId", f"unknown_function_{path}_{method}")
+
+            # Extraire les paramètres d'entrée et de sortie
+            parameters_in = method_info.get("parameters", [])
+            parameters_out = method_info.get("responses", {}).get("200", {}).get("content", {}).get("application/json", {}).get("example", None)
+
+            # Stocker les informations dans le dictionnaire
+            endpoints_info[function_name] = {
+                "path": path,
+                "method": method,
+                "parameters_in": parameters_in,
+                "parameters_out": parameters_out
+            }
+
+    # Enregistrer le dictionnaire dans un fichier JSON
+    with open("endpoints.json", "w") as json_file:
+        json.dump(endpoints_info, json_file, indent=2)
+
+    print("Le fichier endpoints.json a été généré avec succès.")
+else:
+    print("Erreur: Impossible de récupérer les données OpenAPI.")

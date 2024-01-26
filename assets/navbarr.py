@@ -7,13 +7,13 @@ app = dash.Dash(__name__)
 def create_bande_bleue():
     # Définir le logo
     logo = html.Img(
-        src="https://cdn.discordapp.com/attachments/1186321691480166430/1199762196322861066/Design_sans_titre.png?ex=65c3b89e&is=65b1439e&hm=4db740ce8b1c743fb535f78bee908c677e6b78f64b37a70aa2e8da832ab00452",
+        src="",
         height="200px",  # Ajustez la hauteur de l'image à votre convenance
         width="auto",   # Réglez la largeur sur 'auto' pour maintenir le rapport hauteur/largeur
     )
 # Logo
 logo = html.Img(
-    src='https://cdn.discordapp.com/attachments/1186321691480166430/1199762196322861066/Design_sans_titre.png?ex=65c3b89e&is=65b1439e&hm=4db740ce8b1c743fb535f78bee908c677e6b78f64b37a70aa2e8da832ab00452',
+    src='',
     style={
         'float': 'left',  # Positionne le logo à gauche
         'margin-right': '10px',  # Ajoute une marge à droite pour l'espace
